@@ -7,4 +7,4 @@ Official PyTorch implementation for the NeurIPS 2023 paper: "Fixing Unsupervised
 
 ![](assets/teaser.png)
 
-## Code Release Coming Soon
+## Code Release Coming Soon (Before Dec 10!)
