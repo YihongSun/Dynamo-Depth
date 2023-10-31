@@ -1,5 +1,5 @@
 # Fixing Unsupervised Depth Estimation for Dynamical Scenes
-### [Project Page](https://dynamo-depth.github.io) | [Video](tmp) | [Paper](tmp)
+### [Project Page](https://dynamo-depth.github.io) | [Paper](https://arxiv.org/pdf/2310.18887.pdf) | [Video](tmp)
 
 Official PyTorch implementation for the NeurIPS 2023 paper: "Fixing Unsupervised Depth Estimation for Dynamical Scenes".
 
