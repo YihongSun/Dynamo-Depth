@@ -146,7 +146,7 @@ if __name__ == '__main__':
             ## Process Image
             fpath = osp.join(data_root, cam['filename'])
             if not osp.exists(org_path):
-                os.system(f'ln -s {fpath} {org_path}')
+                os.system(f'ln -s {osp.realpath(fpath)} {org_path}')
             if not osp.exists(dwn_path):
                 dwn_height, dwn_width = int(org_height / downsample_factor), int(org_width / downsample_factor)
                 dwn_rgb = cv2.resize(cv2.imread(fpath), (dwn_width, dwn_height), interpolation=cv2.INTER_AREA)
