@@ -83,13 +83,13 @@ pip install nuscenes-devkit pyquaternion
 ```
 and then run the following line:
 ```
-python3 prepare_data/nuScenes.py </PATH/TO/NUSCENES>
+python3 prepare_data/nuScenes.py data_dir/nuscenes
 ```
-The processed dataset would be located in `</PATH/TO/NUSCENES>/scenes/`.
+The processed dataset would be located in `data_dir/nuscenes/scenes/`.
 
 🔹 To confirm proper data processing, after the first segment is processed via `prepare_data/nuScenes.py`, please run 
 ```
-python3 prepare_data/compare_datasets.py assets/tiny_nuscenes/scenes/scene-0001/ </PATH/TO/NUSCENES>/scenes/scene-0001/
+python3 prepare_data/compare_datasets.py assets/tiny_nuscenes/scenes/scene-0001/ data_dir/nuscenes/scenes/scene-0001/
 ```
 
 
