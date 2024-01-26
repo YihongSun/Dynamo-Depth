@@ -75,7 +75,7 @@ The following are a set of shared arguments to use with any of the evaluation sc
 - `-d <DATASET_NAME>` specifies which dataset (`"waymo"`, `"nuscenes"`, or `"kitti"`) to evaluate on, and the default is `"waymo"`.
 - `--eval_dir` defines the output directory where the results would be saved, with default `"./outputs"`.
 
-**Note**: To access the trained models for Waymo Open, please send us an [email](mailto:yihong@cs.cornell.edu) with your name, institute, a screenshot of the the Waymo dataset registration confirmation mail, and your intended usage. Please send a second email if we don't get back to you in two days. Please note that Waymo open dataset is under strict non-commercial license so we are not allowed to share the model with you if it will used for any profit-oriented activities.
+**Note**: To access the trained models for Waymo Open, please fill out the [Google Form](https://forms.gle/nRezg2gr7QDXJGcA9), and [raise an issue](https://github.com/YihongSun/Dynamo-Depth/issues/new) if we don't get back to you in two days. Please note that Waymo open dataset is under strict non-commercial license so we are not allowed to share the model with you if it will used for any profit-oriented activities.
 
 ### 📊 Depth
 [eval/depth.py](eval/depth.py) evaluates monocular depth estimation, with results saved in `./outputs/<CKPT>_<DATASET>/depth/`.
@@ -84,8 +84,8 @@ The following are a set of shared arguments to use with any of the evaluation sc
 ```
 ## === Missing checkpoints will be downloaded automatically === ##
 
-python3 eval/depth.py -l ckpt/W_Dynamo-Depth                                  ## please reach out for ckpt!!
-python3 eval/depth.py -l ckpt/W_Dynamo-Depth_MD2 --depth_model monodepthv2    ## please reach out for ckpt!!
+python3 eval/depth.py -l ckpt/W_Dynamo-Depth                                  ## please fill out the form for ckpt!!
+python3 eval/depth.py -l ckpt/W_Dynamo-Depth_MD2 --depth_model monodepthv2    ## please fill out the form for ckpt!!
 python3 eval/depth.py -l ckpt/N_Dynamo-Depth -d nuscenes
 python3 eval/depth.py -l ckpt/N_Dynamo-Depth_MD2 --depth_model monodepthv2 -d nuscenes
 python3 eval/depth.py -l ckpt/K_Dynamo-Depth -d kitti
@@ -120,7 +120,7 @@ Note that by adding `--split nuscenes_dayclear`, we evaluate on the nuScenes day
 ```
 ## === Missing checkpoints will be downloaded automatically === ##
 
-python3 eval/motion_segmentation.py -l ckpt/W_Dynamo-Depth                         ## please reach out for ckpt!!
+python3 eval/motion_segmentation.py -l ckpt/W_Dynamo-Depth                         ## please fill out the form for ckpt!!
 python3 eval/motion_segmentation.py -l ckpt/N_Dynamo-Depth -d nuscenes --split nuscenes_dayclear
 ```
 
@@ -131,8 +131,8 @@ python3 eval/motion_segmentation.py -l ckpt/N_Dynamo-Depth -d nuscenes --split n
 ```
 ## === Missing checkpoints will be downloaded automatically === ##
 
-python3 eval/odometry.py -l ckpt/W_Dynamo-Depth                                    ## please reach out for ckpt!!                                  
-python3 eval/odometry.py -l ckpt/W_Dynamo-Depth_MD2 --depth_model monodepthv2      ## please reach out for ckpt!!     
+python3 eval/odometry.py -l ckpt/W_Dynamo-Depth                                    ## please fill out the form for ckpt!!                                  
+python3 eval/odometry.py -l ckpt/W_Dynamo-Depth_MD2 --depth_model monodepthv2      ## please fill out the form for ckpt!!     
 python3 eval/odometry.py -l ckpt/N_Dynamo-Depth -d nuscenes --split nuscenes_dayclear
 python3 eval/odometry.py -l ckpt/N_Dynamo-Depth_MD2 --depth_model monodepthv2 -d nuscenes --split nuscenes_dayclear
 ```
@@ -144,7 +144,7 @@ python3 eval/odometry.py -l ckpt/N_Dynamo-Depth_MD2 --depth_model monodepthv2 -d
 ```
 ## === Missing checkpoints will be downloaded automatically === ##
 
-python3 eval/visualize.py -l ckpt/W_Dynamo-Depth                                   ## please reach out for ckpt!!     
+python3 eval/visualize.py -l ckpt/W_Dynamo-Depth                                   ## please fill out the form for ckpt!!     
 python3 eval/visualize.py -l ckpt/N_Dynamo-Depth -d nuscenes
 ```
 
