@@ -63,11 +63,11 @@ python3 prepare_data/compare_datasets.py assets/tiny_waymo/val/segment-102436014
 
 ### 💾 nuScenes Dataset
 
-🔹 Please refer to the [official website](https://www.nuscenes.org) for downloading the Waymo Open Dataset. Once downloaded and unzipped to `data_dir/nuscenes`, you should be able to obtain following directoy sturcture.
+🔹 Please refer to the [official website](https://www.nuscenes.org) for downloading the nuScenes Dataset, including `Full dataset (v1.0)` and `nuScenes-panoptic`. Once downloaded and unzipped to `data_dir/nuscenes`, you should be able to obtain following directoy sturcture.
 ```
 data_dir/nuscenes
   |-- v1.0-trainval/
-  |-- nuScenes-panoptic-v1.0-all/
+  |-- panoptic
   |-- maps/
   |-- samples/
     |-- CAM_FRONT/
