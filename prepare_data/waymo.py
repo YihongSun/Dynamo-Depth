@@ -62,6 +62,7 @@ if __name__ == "__main__":
     bool_cam = True        
     bool_depth = True
     bool_MotMask = True
+    split2extract = ['train', 'val']  # ['train', 'val']
     cam_names = ['FRONT']  # ['FRONT', 'FRONT_LEFT', 'SIDE_LEFT', 'FRONT_RIGHT', 'SIDE_RIGHT']
     downsample_factor = 4
     img_d_name = 'rgb'
@@ -93,12 +94,17 @@ if __name__ == "__main__":
         print('Input dataset_dir is not found, will be created.')
         os.makedirs(DATASET_DIR)
     
+    if len(sys.argv) > 3:  # for parallel processing
+        split_idx, split_num = int(sys.argv[3]), int(sys.argv[4])
+    else:
+        split_idx, split_num = 0, 1
+
     print('\n##############')
     print(f'Record Directory: {RECORD_DIR}')
     print(f'Output Directory: {DATASET_DIR}')
     print('##############\n')
 
-    for data_type in ['val', 'train']:
+    for data_type in split2extract:
         dataset_dir = osp.join(DATASET_DIR, data_type)
         record_dir = osp.join(RECORD_DIR, data_type)
         if not osp.exists(record_dir):
@@ -117,7 +123,11 @@ if __name__ == "__main__":
         print(f'Processing {record_dir} | # Traversals = {len(traversals)}...')
         print('##############\n')
 
-        iterator = tqdm(enumerate(traversals), desc='Processing Waymo Traversals', total=len(traversals))
+        start_idx = len(traversals) * split_idx // split_num
+        end_idx = len(traversals) * (split_idx + 1) // split_num
+        traversals = traversals[start_idx:end_idx]
+
+        iterator = tqdm(enumerate(traversals), desc=f'Processing Waymo Traversals (thread_id={split_idx})', total=len(traversals))
         for index, (traversal_path, traversal_name) in iterator:
             
             # ========== Handling directories ========== #
@@ -174,8 +184,6 @@ if __name__ == "__main__":
                     points, cp_points = frame_utils.convert_range_image_to_point_cloud(frame, range_images, camera_projections, range_image_top_pose)
                     points_all = np.concatenate(points, axis=0)                         # 3d points in vehicle frame.
                     cp_points_all = np.concatenate(cp_points, axis=0)                   # camera projection corresponding to each point.
-                    points_all_tensor = tf.norm(points_all, axis=-1, keepdims=True)     # The distance between lidar points and vehicle frame origin.
-                    cp_points_all_tensor = tf.constant(cp_points_all, dtype=tf.int32)
 
 
                 # ========== Go through each camera view ========== #
@@ -203,11 +211,33 @@ if __name__ == "__main__":
                         cv2.imwrite(osp.join(traversal_dir, cam_name, img_d_name, 'downsample', '{:06}.jpg'.format(num_frames)), down_rgb)
 
                     if bool_depth:
-                        # Get depth map from LiDAR
-                        mask = tf.equal(cp_points_all_tensor[..., 0], cam_code)
-                        cp_points_all_tensor = tf.cast(tf.gather_nd(cp_points_all_tensor, tf.where(mask)), dtype=tf.float32)
-                        points_all_tensor = tf.gather_nd(points_all_tensor, tf.where(mask))
-                        depth_points = tf.concat([cp_points_all_tensor[..., 1:3], points_all_tensor], axis=-1).numpy()
+                        fx, fy, cx, cy= [_ for _ in cam_cal.intrinsic][:4]
+                        intrinsic = np.array([[fx, 0, cx], [0, fy, cy], [0, 0, 1]])
+                        extrinsic = np.array(cam_cal.extrinsic.transform).reshape(4, 4)
+                        # (x front, y left, z up) -> (x right, y down, z front)
+                        axis_swap = np.array([[0, 0, 1, 0], [-1, 0, 0, 0], [0, -1, 0, 0], [0, 0, 0, 1]])
+                        # ego to camera
+                        e2c = np.linalg.inv(extrinsic @ axis_swap) 
+
+                        # https://github.com/nnanhuang/S3Gaussian/blob/6c96925981a7a02328f382691d38a20bfe8c05a2/scene/dataset_readers.py#L857
+                        # lidar-pts --> camera-pts --> pixel-pts : intrinsic @ (x,y,z) = (u,v,1)*z
+                        cam_points = (e2c[:3, :3] @ points_all.T + e2c[:3, 3:4]).T
+                        pixel_points = (intrinsic @ cam_points.T).T
+                        # only take points in front of the camera
+                        pixel_points = pixel_points[pixel_points[:, 2]>0]  
+                        # normalize the pixel points: (u,v,1)
+                        image_points = pixel_points[:, :2] / pixel_points[:, 2:]
+                        # filter out points outside the image
+                        valid_mask = (
+                            (image_points[:, 0] >= 0)
+                            & (image_points[:, 0] < cam_cal.width)
+                            & (image_points[:, 1] >= 0)
+                            & (image_points[:, 1] < cam_cal.height)
+                        )
+                        pixel_points = pixel_points[valid_mask]     # pts_cam : (x,y,z)
+                        image_points = image_points[valid_mask]     # pts_img : (u,v)
+
+                        depth_points = np.concatenate((image_points[:, 0:2], pixel_points[:, 2:3]), 1)
                         np.save(osp.join(traversal_dir, cam_name, depth_d_name, '{:06}.npy'.format(num_frames)), depth_points)
 
                     if bool_has_mask:

@@ -98,8 +98,8 @@ python3 eval/depth.py -l ckpt/K_Dynamo-Depth_MD2 --depth_model monodepthv2 -d ki
 |  [K_Dynamo-Depth](https://drive.google.com/file/d/1b1kwxqUquFbSMU9WLAr6_pIbj1HxoWLJ/view?usp=share_link)(*)  |  KITTI   | 0.112  |  0.768  |  4.528  |  0.184  |  0.874  |  0.961  |  0.984   |
 |  [N_Dynamo-Depth_MD2](https://drive.google.com/file/d/1t0Z_2hD0raAi4vDK_VZFXIcwcTFx0elU/view?usp=sharing)  |  nuScenes  |  0.193  |  2.285  |  7.357  |  0.287  |  0.765  |  0.885  |  0.935  |
 |  [N_Dynamo-Depth](https://drive.google.com/file/d/1oqQVFyGxo_SxclpinrBlwGSE1gEfVAZY/view?usp=sharing)  |  nuScenes   |  0.179  |  2.118  |  7.050  |  0.271  |  0.787  |  0.896  |  0.940  |
-|  W_Dynamo-Depth_MD2(†)  |  Waymo  |  0.130  |  1.439  |  6.646  |  0.183  |  0.851  |  0.959  |  0.985  |
-|  W_Dynamo-Depth(†)  |  Waymo   | 0.116  |  1.156  |  6.000  |  0.166  |  0.878  |  0.969  |  0.989   |
+|  W_Dynamo-Depth_MD2(*†)|  Waymo  |  0.137  |  1.502  |  6.582  |  0.194  |  0.833  |  0.951  |  0.982  |
+|  W_Dynamo-Depth(*†)|  Waymo   | 0.121  |  1.216  |  6.003  |  0.176  |  0.861  |  0.962  |  0.986   |
 
 (*) Very minor differences compared to the results in the paper. Rest of the checkpoints are consistent with the paper.  
 (†) Please refer to the note above for obtaining access to the models trained on Waymo Open Dataset.
